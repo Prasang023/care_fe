@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Combobox } from "@headlessui/react";
 import { debounce } from "lodash";
 import { DropdownTransition } from "../Common/components/HelperComponents";
@@ -61,6 +61,11 @@ const AutoCompleteAsync = (props: Props) => {
     fetchDataAsync(query);
   }, [query, fetchDataAsync]);
 
+  const handleBlur = useCallback(() => {
+    props.onBlur;
+    setQuery("");
+  }, []);
+
   return (
     <div className={className}>
       <Combobox
@@ -87,7 +92,7 @@ const AutoCompleteAsync = (props: Props) => {
               }
               onChange={({ target }) => setQuery(target.value)}
               onFocus={props.onFocus}
-              onBlur={props.onBlur}
+              onBlur={handleBlur}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
               <div className="absolute top-1 right-0 flex items-center mr-2 text-lg text-secondary-900">
